@@ -55,7 +55,7 @@ class Tenshi : Parser(){
 
         Jsoup.parse(htmlResponse).select("ul.loop.episode-loop.thumb > li > a").forEach {
                 Episode(
-                    number = it.select("div.episode-slug").text(),
+                    number = it.select("div.episode-slug").text().replace("Episode ",""),
                     title = it.select("div.episode-title").text(),
                     link = it.attr("href"),
                     thumbnail = it.select("img.image").attr("src"),
