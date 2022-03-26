@@ -25,16 +25,19 @@ class FPlayer : Extractor() {
             Request.Builder().url(apiLink).header("referer", url).post(EMPTY_REQUEST).build()
         ).execute().body!!.string()
 
-        val deserializedJsonResponse = jacksonObjectMapper().readValue<FembedResponse>(jsonResponse)
         val returnResponse = mutableListOf<Video>()
-        deserializedJsonResponse.data.forEach {
-            returnResponse.add(
-                Video(
-                    name = it.label,
-                    url = it.file,
-                    isM3U8 = false,
+
+        if ("\"success\":false" !in jsonResponse) { // if succeeded, then only decode response
+            val deserializedJsonResponse = jacksonObjectMapper().readValue<FembedResponse>(jsonResponse)
+            deserializedJsonResponse.data.forEach {
+                returnResponse.add(
+                    Video(
+                        name = it.label,
+                        url = it.file,
+                        isM3U8 = false,
+                    )
                 )
-            )
+            }
         }
         return VideoServer(name,returnResponse)
     }
