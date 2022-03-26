@@ -43,7 +43,7 @@ class NineAnime : Parser() {
                 val link = it.select("a").attr("href")
                 val title = it.select("img").attr("title")
                 val cover = it.select("img").attr("data-src")
-                responseArray.add(SearchResponse(link, title, cover))
+                responseArray.add(SearchResponse(title, link, cover))
             }
 
         return responseArray
