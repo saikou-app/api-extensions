@@ -27,13 +27,13 @@ class GogoCDN : Extractor() {
     }
 
     private fun cryptoHandler(string:String,encrypt:Boolean=true) : String {
-        val key = "25716538522938396164662278833288".toByteArray()
+        val key = "63976882873559819639988080820907".toByteArray()
         val secretKey =  SecretKeySpec(key, "AES")
 
-        val iv = "1285672985238393".toByteArray()
+        val iv = "4770478969418267".toByteArray()
         val ivParameterSpec =  IvParameterSpec(iv)
 
-        val padding = byteArrayOf(0x8,0xe,0x3,0x8,0x9,0x3,0x4,0x9)
+        val padding = byteArrayOf(0x8,0x8,0x8,0x8,0x8,0x8,0x8,0x8)
 
         val cipher = Cipher.getInstance("AES/CBC/NoPadding")
         return if (!encrypt) {
@@ -50,7 +50,7 @@ class GogoCDN : Extractor() {
         val response = HttpClient.newCall(Request.Builder().url(url).build()).execute().body!!.string()
         val returnVideoList = mutableListOf<Video>()
         if(url.contains("streaming.php")) {
-            Jsoup.parse(response).select("script[data-name='crypto']").attr("data-value").also { token ->
+            Jsoup.parse(response).select("script[data-name='episode']").attr("data-value").also { token ->
                 val id = cryptoHandler(cryptoHandler(token, false).substringBefore('&'), true)
                 val dataFromJson = jacksonObjectMapper().readValue<JsonAjaxResponse>(
                     HttpClient.newCall(
