@@ -26,7 +26,8 @@ class Tenshi : Parser(){
     }
 
     override suspend fun search(mediaObj:Media): List<SearchResponse> {
-        val query = mediaObj.title!!.english!!
+        val queryData = if (mediaObj.title!!.english != null) mediaObj.title!!.english!! else mediaObj.title!!.romaji!!
+        val query = sanitizeQuery(queryData)
         val responseArray = arrayListOf<SearchResponse>()
 
         val htmlResponse = HttpClient.newCall(

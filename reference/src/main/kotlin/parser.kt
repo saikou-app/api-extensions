@@ -77,6 +77,10 @@ abstract class Parser{
         return null
     }
 
+    open fun sanitizeQuery(query:String) : String{
+        return Regex("\\W+").replace(query," ")
+    }
+
     open var displayText = ""
     open var displayTextListener : ((String)->Unit)? = null
 

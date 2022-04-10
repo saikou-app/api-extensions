@@ -27,7 +27,8 @@ class NineAnime : Parser() {
     // defaults
 
     override suspend fun search(mediaObj:Media): List<SearchResponse> {
-        val query = mediaObj.title!!.english!!
+        val queryData = if (mediaObj.title!!.english != null) mediaObj.title!!.english!! else mediaObj.title!!.romaji!!
+        val query = sanitizeQuery(queryData)
         var url = URLEncoder.encode(query, "utf-8")
         if (query.startsWith("$!")) {
             val a = query.replace("$!", "").split(" | ")
